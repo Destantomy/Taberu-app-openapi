@@ -1,0 +1,1819 @@
+openapi: 3.0.3
+info:
+  title: Taberu! project app
+  version: 1.0.0
+  description: This app is our 1st simple shop market
+  license:
+    name: MIT
+    url: https://nestjs.com
+servers:
+  - url: http://127.0.0.1:8080/api
+security:
+  - bearerAuth: []
+paths:
+  /user/register:
+    post:
+      operationId: userRegistration
+      summary: user registration
+      security: []
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registerRequest'
+      responses:
+        '201':
+          description: user registration successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/created_201'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userCreated'
+        '400':
+          description: user registration bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          username:
+                            - username required
+                            - username minimum 5 characters
+                            - username invalid
+                          password:
+                            - password required
+                            - password minimum 5 characters
+                            - password invalid
+        '409':
+          description: user registration conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          username: username already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/login:
+    post:
+      operationId: userLogin
+      summary: user login
+      security: []
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginRequest'
+      responses:
+        '200':
+          description: user login successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userLogin'
+        '400':
+          description: login bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          username:
+                            - username required
+                            - username invalid
+                          password:
+                            - password required
+                            - password invalid
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/getUsers:
+    get:
+      operationId: getUserByAdmin
+      summary: get users
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: get users by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/userCreated'
+        '401':
+          description: get users unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: get users forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/getUserByUuid/{uuid}:
+    get:
+      operationId: getUserByUuidADmin
+      summary: get user by uuid by admin
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: get user by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userCreated'
+        '401':
+          description: get user by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: get user by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: get user by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/getMe:
+    get:
+      operationId: getUserMe
+      summary: get user me
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: get user me accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userCreated'
+        '401':
+          description: get user me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/patchUserByUuid/{uuid}:
+    patch:
+      operationId: patchUserByUuidAdmin
+      summary: patch user by uuid by admin
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userUpdateRequest'
+      responses:
+        '200':
+          description: patch user by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userUpdated'
+        '400':
+          description: patch user by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          username:
+                            - username required
+                            - username minimum has 5 characters
+                          password:
+                            - password minimum has 5 characters
+        '401':
+          description: patch user by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: patch user by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: patch user by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '409':
+          description: patch user by uuid by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          username: username already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/patchUserMe:
+    patch:
+      operationId: patchUserMe
+      summary: patch user me
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userUpdateRequest'
+      responses:
+        '200':
+          description: patch user me accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/userUpdated'
+        '400':
+          description: patch user me bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          username:
+                            - username required
+                            - username minimum has 5 characters
+                          password:
+                            - password minimum has 5 characters
+        '401':
+          description: patch user me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '404':
+          description: patch user me not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '409':
+          description: patch user me conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          username: username already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/deleteUserByUuid/{uuid}:
+    delete:
+      operationId: deleteUserByUuidAdmin
+      summary: delete user by uuid by admin
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: delete user by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete user by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: delete user by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: delete user by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /user/deleteUserMe:
+    delete:
+      operationId: deleteUserMe
+      summary: delete user me
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: delete user me accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete user me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '404':
+          description: delete user me not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /product/postProduct:
+    post:
+      operationId: postProductAdmin
+      summary: post new product by admin
+      security:
+        - bearerAuth: []
+      tags:
+        - product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productRequest'
+      responses:
+        '201':
+          description: post new product by admin successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/created_201'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/productCreated'
+        '400':
+          description: post new product by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          productName:
+                            - productName required
+                            - productName minimum has 5 characters
+                            - productName invalid
+                          imageUrl:
+                            - imageUrl required
+                            - imageUrl invalid
+                          price:
+                            - price required
+                            - price should greater than 0
+                            - price invalid
+                          stock:
+                            - stock required
+                            - stock should greater than 0
+                            - stock invalid
+                          categoryUuid:
+                            - category required
+        '401':
+          description: post product by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: post product by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '409':
+          description: post product by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          productName: productName already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /product/getProducts:
+    get:
+      operationId: getProducts
+      summary: get products by both of admin and customer
+      tags:
+        - product
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: get products by both of admin and customer accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/productCreated'
+        '401':
+          description: get products by both of admin and user unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /product/getProductByUuid/{uuid}:
+    get:
+      operationId: getProductByUuid
+      summary: get product by uuid by both of admin and customer
+      tags:
+        - product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: get product by uuid by both of admin and user accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/productCreated'
+        '401':
+          description: get product by uuid by both of admin and user unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: get product by uuid by both of admin and user forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: get product by uuid by both of admin and user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /product/patchProductByUuid/{uuid}:
+    patch:
+      operationId: patchProductByUuidAdmin
+      summary: patch product by uuid by admin
+      tags:
+        - product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productUpdateRequest'
+      responses:
+        '200':
+          description: patch product by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/productUpdated'
+        '400':
+          description: patch product by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          productName:
+                            - productName required
+                            - productName minimum has 5 characters
+                            - productName invalid
+                          imageUrl:
+                            - imageUrl required
+                            - imageUrl invalid
+                          price:
+                            - price required
+                            - price should greater than 0
+                            - price invalid
+                          stock:
+                            - stock required
+                            - stock should greater than 0
+                            - stock invalid
+                          categoryUuid:
+                            - category required
+        '401':
+          description: patch product by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: patch product by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: patch product by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '409':
+          description: patch product by uuid by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          productName: productName already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /product/deleteProductByUuid/{uuid}:
+    delete:
+      operationId: deleteProductByUuidAdmin
+      summary: delete product by uuid by admin
+      tags:
+        - product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: delete product by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete product by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: delete product by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: delete product by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /category/postCategory:
+    post:
+      operationId: postCategoryAdmin
+      summary: post new category by admin
+      security:
+        - bearerAuth: []
+      tags:
+        - category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/categoryRequest'
+      responses:
+        '201':
+          description: post new category by admin successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/created_201'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/categoryCreated'
+        '400':
+          description: post new category by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          categoryName:
+                            - categoryName required
+                            - categoryName should has 5 characters
+                            - categoryName invalid
+        '401':
+          description: post category by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: post category by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '409':
+          description: post category by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          categoryName: categoryName already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /category/getCategories:
+    get:
+      operationId: getCategoriesAdmin
+      summary: get categories by admin
+      tags:
+        - category
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: get categories by admin
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/categoryCreated'
+        '401':
+          description: post category by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: post category by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /category/getCategoryByUuid/{uuid}:
+    get:
+      operationId: getCategoryByUuidAdmin
+      summary: get category by uuid by admin
+      tags:
+        - category
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: get category by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/categoryCreated'
+        '401':
+          description: get category by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: get product by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: get product by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /category/patchCategoryByUuid/{uuid}:
+    patch:
+      operationId: patchCategoryByUuidAdmin
+      summary: patch category by uuid by admin
+      tags:
+        - category
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/categoryUpdateRequest'
+      responses:
+        '200':
+          description: patch category by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/categoryUpdated'
+        '400':
+          description: patch category by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          categoryName:
+                            - categoryName required
+                            - categoryName minimum has 5 characters
+                            - categoryName invalid
+        '401':
+          description: patch category by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: patch category by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: patch category by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '409':
+          description: patch category by uuid by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/conflict_409'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          categoryName: categoryName already exist
+        '500':
+          $ref: '#/components/responses/error_500'
+  /category/deleteCategoryByUuid/{uuid}:
+    delete:
+      operationId: deleteCategoryByUuidAdmin
+      summary: delete category by uuid by admin
+      tags:
+        - category
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: delete category by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete category by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: delete category by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: delete category by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /cart/addProductCart:
+    post:
+      operationId: addProductCart
+      summary: adding product into cart by customer
+      security:
+        - bearerAuth: []
+      tags:
+        - cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cartRequest'
+      responses:
+        '201':
+          description: adding product by customer successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/created_201'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/cartCreate'
+        '400':
+          description: adding product by customer bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          quantity:
+                            - quantity required
+                            - quantity should be greater than 0
+        '401':
+          description: adding product by customer unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /cart/getCartMe:
+    get:
+      operationId: getCartMe
+      summary: get cart of me
+      tags:
+        - cart
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: get cart of me accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/cartCreate'
+        '401':
+          description: get cart of me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /cart/updateProductCartMe:
+    patch:
+      operationId: updateProductCartMe
+      summary: update product cart of me
+      tags:
+        - cart
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cartUpdateRequest'
+      responses:
+        '200':
+          description: update product cart of me accepted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/accepted_200'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/cartCreate'
+        '400':
+          description: update product cart of me bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          quantity:
+                            - quantity required
+                            - quantity should be greater than 0
+        '401':
+          description: update product cart of me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /cart/deleteProductCartMe:
+    delete:
+      operationId: deleteProductCartMe
+      summary: delete product cart of me
+      tags:
+        - cart
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: delete product cart of me accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete product cart of me unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '404':
+          description: delete product cart of me not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /transactions/postTransactionAdmin:
+    post:
+      operationId: postTransactionAdmin
+      summary: post transaction journal after done the payment
+      security:
+        - bearerAuth: []
+      tags:
+        - transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transactionsRequest'
+      responses:
+        '201':
+          description: post transaction journal successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/created_201'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/transactionsCreate'
+        '401':
+          description: adding product by customer unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '500':
+          $ref: '#/components/responses/error_500'
+  /transactions/deleteTransactionAdmin/{uuid}:
+    delete:
+      operationId: deleteTransactionAdmin
+      summary: delete transaction by uuid by admin
+      tags:
+        - transaction
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: delete transaction by uuid by admin accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleted_204'
+        '401':
+          description: delete transaction by uuid by admin unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized_401'
+        '403':
+          description: delete transaction by uuid by admin forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forbidden_403'
+        '404':
+          description: delete transaction by uuid by admin not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound_404'
+        '500':
+          $ref: '#/components/responses/error_500'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    registerRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: aristoteles
+        password:
+          type: string
+          format: password
+          description: plain password will be hashed by server
+          example: secret1234
+    created_201:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: created
+    userCreated:
+      type: object
+      required:
+        - uuid
+        - username
+        - role
+        - createdAt
+        - updatedAt
+      properties:
+        uuid:
+          type: string
+          example: user-abcdef1234
+          readOnly: true
+        username:
+          type: string
+          example: aristoteles
+        role:
+          type: string
+          example: customer
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+          readOnly: true
+    badRequest_400:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: bad request
+    conflict_409:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 409
+        message:
+          type: string
+          example: conflict
+    loginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: aristoteles
+        password:
+          type: string
+          format: password
+          example: secret1234
+    accepted_200:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: accepted
+    userLogin:
+      type: object
+      required:
+        - username
+        - token
+      properties:
+        username:
+          type: string
+          example: aristoteles
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          example: 3600
+    unauthorized_401:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: unauthorized
+    forbidden_403:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 403
+        message:
+          type: string
+          example: forbidden
+    notFound_404:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: not found
+    userUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: stagiritis
+        password:
+          type: string
+          format: password
+          description: plain password will be hashed by server
+          example: secret12345
+    userUpdated:
+      type: object
+      properties:
+        username:
+          type: string
+          example: stagiritis
+        password:
+          type: string
+          format: password
+          description: plain password will hashed by server
+          example: secret123
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    deleted_204:
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: integer
+          example: 204
+        message:
+          type: string
+          example: deleted
+    productRequest:
+      type: object
+      required:
+        - productName
+        - imageUrl
+        - price
+        - stock
+        - categoryUuid
+        - isAvailable
+      properties:
+        productName:
+          type: string
+          example: onigiri
+        imageUrl:
+          type: string
+          example: /assets/images/product/product-123.png
+        price:
+          type: integer
+          example: 12000
+        stock:
+          type: integer
+          example: 10
+        categoryUuid:
+          type: string
+          example: category-abcdef1234
+        isAvailable:
+          type: boolean
+          example: true
+    productCreated:
+      type: object
+      required:
+        - uuid
+        - productName
+        - imageUrl
+        - price
+        - stock
+        - category
+        - isAvailable
+        - createdAt
+        - updatedAt
+      properties:
+        uuid:
+          type: string
+          example: product-abcdef1234
+        productName:
+          type: string
+          example: onigiri
+        imageUrl:
+          type: string
+          example: /assets/images/product/product-123.png
+        price:
+          type: integer
+          example: 12000
+        stock:
+          type: integer
+          example: 10
+        category:
+          type: string
+          example: category-abcdef1234
+        isAvailable:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    productUpdateRequest:
+      type: object
+      properties:
+        productName:
+          type: string
+          example: onigiri salmon
+        imageUrl:
+          type: string
+          example: /assets/images/product/product-1234.png
+        price:
+          type: integer
+          example: 11800
+        stock:
+          type: integer
+          example: 9
+        categoryUuid:
+          type: string
+          example: category-abcde1234
+        isAvailable:
+          type: boolean
+          example: true
+    productUpdated:
+      type: object
+      properties:
+        productName:
+          type: string
+          example: onigiri salmon
+        imageUrl:
+          type: string
+          example: /assets/images/product/product-1234.png
+        price:
+          type: integer
+          example: 11800
+        stock:
+          type: integer
+          example: 9
+        categoryUuid:
+          type: string
+          example: category-abcde1234
+        isAvailable:
+          type: boolean
+          example: true
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    categoryRequest:
+      type: object
+      required:
+        - categoryName
+      properties:
+        categoryName:
+          type: string
+          example: japanese
+    categoryCreated:
+      type: object
+      required:
+        - uuid
+        - categoryName
+        - createdAt
+        - updatedAt
+      properties:
+        uuid:
+          type: string
+          example: category-abcdef1234
+        categoryName:
+          type: string
+          example: japanese
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    categoryUpdateRequest:
+      type: object
+      properties:
+        categoryName:
+          type: string
+          example: korean
+    categoryUpdated:
+      type: object
+      properties:
+        categoryName:
+          type: string
+          example: korean
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    cartRequest:
+      type: object
+      required:
+        - productUuid
+        - quantity
+      properties:
+        productUuid:
+          type: string
+          example: product-abcdef1234
+        quantity:
+          type: integer
+          minimum: 1
+          example: 5
+    productRelation:
+      type: object
+      required:
+        - productUuid
+        - productName
+        - price
+        - quantity
+        - subTotal
+      properties:
+        productUuid:
+          type: string
+          example: product-abcdef1234
+        productName:
+          type: string
+          example: onigiri
+        price:
+          type: integer
+          example: 12000
+        quantity:
+          type: integer
+          example: 5
+        subTotal:
+          type: integer
+          description: subTotal = quantity*price
+          example: 60000
+    cartCreate:
+      type: object
+      required:
+        - uuid
+        - ownerUuid
+        - items
+        - totalPrice
+        - createdAt
+        - updatedAt
+      properties:
+        uuid:
+          type: string
+          example: category-abcdef1234
+        ownerUuid:
+          type: string
+          example: user-abcdef1234
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/productRelation'
+        totalPrice:
+          type: integer
+          example: 60000
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+    cartUpdateRequest:
+      type: object
+      required:
+        - productUuid
+        - quantity
+      properties:
+        productUuid:
+          type: string
+          example: product-abcdef1234
+        quantity:
+          type: integer
+          minimum: 1
+          example: 3
+    transactionsRequest:
+      type: object
+      required: []
+      description: |
+        Checkout current user's cart.
+        All transaction data will be generated from cart.
+    transactionsCreate:
+      type: object
+      required:
+        - uuid
+        - ownerUuid
+        - cartUuid
+        - items
+        - totalPrice
+        - createdAt
+      properties:
+        uuid:
+          type: string
+          example: transaction-abcdef1234
+        ownerUuid:
+          type: string
+          example: user-abcdef1234
+        cartUuid:
+          type: string
+          example: cart-abcdef1234
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/productRelation'
+        totalPrice:
+          type: integer
+          example: 60000
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-01-18T10:30:00Z'
+          readOnly: true
+  responses:
+    error_500:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statusCode
+              - message
+            properties:
+              statusCode:
+                type: integer
+                example: 500
+              message:
+                type: string
+                example: internal server error
