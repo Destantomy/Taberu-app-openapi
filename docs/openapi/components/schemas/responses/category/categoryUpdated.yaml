@@ -1,0 +1,9 @@
+type: object
+properties:
+  categoryName:
+    type: string
+    example: korean
+  updatedAt:
+    type: string
+    format: date-time
+    example: 2026-01-18T10:30:00Z

@@ -1,0 +1,25 @@
+type: object
+required:
+  - productUuid
+  - productName
+  - price
+  - quantity
+  - subTotal
+properties:
+  productUuid:
+    type: string
+    # format: uuid
+    example: product-abcdef1234
+  productName:
+    type: string
+    example: onigiri
+  price:
+    type: integer
+    example: 12000
+  quantity:
+    type: integer
+    example: 5
+  subTotal:
+    type: integer
+    description: subTotal = quantity*price
+    example: 60000

@@ -1,0 +1,161 @@
+addProductCart:
+  post:
+    operationId: addProductCart
+    summary: adding product into cart by customer
+    security:
+      - bearerAuth: []
+    tags: [cart]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/cart/cartRequest.yaml
+    responses:
+      '201':
+        description: adding product by customer successfully
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/created_201.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/cart/cartCreate.yaml
+      '400':
+        description: adding product by customer bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        quantity:
+                          - quantity required
+                          - quantity should be greater than 0
+      '401':
+        description: adding product by customer unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getCartMe:
+  get:
+    operationId: getCartMe
+    summary: get cart of me
+    tags: [cart]
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: get cart of me accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/cart/cartCreate.yaml
+      '401':
+        description: get cart of me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+updateProductCartMe:
+  patch:
+    operationId: updateProductCartMe
+    summary: update product cart of me
+    tags: [cart]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/cart/cartUpdateRequest.yaml
+    responses:
+      '200':
+        description: update product cart of me accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/cart/cartCreate.yaml
+      '400':
+        description: update product cart of me bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        quantity:
+                          - quantity required
+                          - quantity should be greater than 0
+      '401':
+        description: update product cart of me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteProductCartMe:
+  delete:
+    operationId: deleteProductCartMe
+    summary: delete product cart of me
+    tags: [cart]
+    security:
+      - bearerAuth: []
+    responses:
+      '204':
+        description: delete product cart of me accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete product cart of me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '404':
+        description: delete product cart of me not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml

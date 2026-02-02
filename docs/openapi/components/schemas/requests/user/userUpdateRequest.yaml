@@ -1,0 +1,10 @@
+type: object
+properties:
+  username:
+    type: string
+    example: stagiritis
+  password:
+    type: string
+    format: password
+    description: plain password will be hashed by server
+    example: secret12345

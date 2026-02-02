@@ -1,0 +1,17 @@
+type: object
+required:
+  - username
+  - token
+properties:
+  username:
+    type: string
+    example: aristoteles
+  token:
+    type: string
+    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  tokenType:
+    type: string
+    example: Bearer
+  expiresIn:
+    type: integer
+    example: 3600

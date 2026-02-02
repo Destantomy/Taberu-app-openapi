@@ -1,0 +1,13 @@
+type: object
+required:
+  - username
+  - password
+properties:
+  username:
+    type: string
+    example: aristoteles
+  password:
+    type: string
+    format: password
+    description: plain password will be hashed by server
+    example: secret1234

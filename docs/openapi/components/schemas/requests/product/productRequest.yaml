@@ -1,0 +1,28 @@
+type: object
+required:
+  - productName
+  - imageUrl
+  - price
+  - stock
+  - categoryUuid
+  - isAvailable
+properties:
+  productName:
+    type: string
+    example: onigiri
+  imageUrl:
+    type: string
+    example: /assets/images/product/product-123.png
+  price:
+    type: integer
+    example: 12000
+  stock:
+    type: integer
+    example: 10
+  categoryUuid:
+    type: string
+    # format: uuid
+    example: category-abcdef1234
+  isAvailable:
+    type: boolean
+    example: true

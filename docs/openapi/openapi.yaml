@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info: 
+  title: Taberu! project app
+  version: 1.0.0
+  description: This app is our 1st simple shop market
+  license: 
+    name: MIT
+    url: https://nestjs.com    
+
+servers: 
+  - url: http://127.0.0.1:8080/api
+
+security:
+  - bearerAuth: []
+
+paths:
+  # user
+  /user/register:
+    $ref: paths/user.yaml#/register
+  /user/login:
+    $ref: paths/user.yaml#/login
+  /user/getUsers:
+    $ref: paths/user.yaml#/getUsersAdmin
+  /user/getUserByUuid/{uuid}:
+    $ref: paths/user.yaml#/getUserByUuidAdmin
+  /user/getMe:
+    $ref: paths/user.yaml#/getUserMe
+  /user/patchUserByUuid/{uuid}:
+    $ref: paths/user.yaml#/patchUserByuuidAdmin
+  /user/patchUserMe:
+    $ref: paths/user.yaml#/patchUserMe
+  /user/deleteUserByUuid/{uuid}:
+    $ref: paths/user.yaml#/deleteUserByUuidAdmin
+  /user/deleteUserMe:
+    $ref: paths/user.yaml#/deleteUserMe
+  # product
+  /product/postProduct:
+    $ref: paths/product.yaml#/postProductAdmin
+  /product/getProducts:
+    $ref: paths/product.yaml#/getProducts
+  /product/getProductByUuid/{uuid}:
+    $ref: paths/product.yaml#/getProductByUuid
+  /product/patchProductByUuid/{uuid}:
+    $ref: paths/product.yaml#/patchProductByUuidAdmin
+  /product/deleteProductByUuid/{uuid}:
+    $ref: paths/product.yaml#/deleteProductByUuidAdmin
+  # category
+  /category/postCategory:
+    $ref: paths/category.yaml#/postCategoryAdmin
+  /category/getCategories:
+    $ref: paths/category.yaml#/getCategoriesAdmin
+  /category/getCategoryByUuid/{uuid}:
+    $ref: paths/category.yaml#/getCategoryByUuidAdmin
+  /category/patchCategoryByUuid/{uuid}:
+    $ref: paths/category.yaml#/patchCategoryByUuidAdmin
+  /category/deleteCategoryByUuid/{uuid}:
+    $ref: paths/category.yaml#/deleteCategoryByUuidAdmin
+  # cart
+  /cart/addProductCart:
+    $ref: paths/cart.yaml#/addProductCart
+  /cart/getCartMe:
+    $ref: paths/cart.yaml#/getCartMe
+  /cart/updateProductCartMe:
+    $ref: paths/cart.yaml#/updateProductCartMe
+  /cart/deleteProductCartMe:
+    $ref: paths/cart.yaml#/deleteProductCartMe
+  # transactions
+  /transactions/postTransactionAdmin:
+    $ref: paths/transactions.yaml#/postTransactionAdmin
+  /transactions/deleteTransactionAdmin/{uuid}:
+    $ref: paths/transactions.yaml#/deleteTransactionAdmin
+
+components: 
+  securitySchemes:
+    $ref: ./components/securitySchemes.yaml

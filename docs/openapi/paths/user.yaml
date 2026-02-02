@@ -1,0 +1,456 @@
+register:
+  post:
+    operationId: userRegistration
+    summary: user registration
+    security: []
+    tags: [user]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/user/registerRequest.yaml
+    responses:
+      '201':
+        description: user registration successfully
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/created_201.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/user/userCreated.yaml
+      '400':
+        description: user registration bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        username:
+                          - 'username required'
+                          - 'username minimum 5 characters'
+                          - 'username invalid'
+                        password:
+                          - 'password required'
+                          - 'password minimum 5 characters'
+                          - 'password invalid'
+      '409':
+        description: user registration conflict
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/conflict_409.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        username: username already exist
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+login:
+  post:
+    operationId: userLogin
+    summary: user login
+    security: []
+    tags: [user]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/user/loginRequest.yaml
+    responses:
+        '200':
+          description: user login successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ../components/schemas/http/accepted_200.yaml
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: ../components/schemas/responses/user/userLogin.yaml
+        '400':
+          description: login bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ../components/schemas/http/badRequest_400.yaml
+                  - type: object
+                    required:
+                      - errors
+                    properties:
+                      errors:
+                        type: object
+                        example:
+                          username:
+                            - 'username required'
+                            - 'username invalid'
+                          password:
+                            - 'password required'
+                            - 'password invalid'
+        '500':
+          $ref: ../components/schemas/http/error_500.yaml
+getUsersAdmin:
+  get:
+    operationId: getUserByAdmin
+    summary: get users
+    tags: [user]
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: get users by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: ../components/schemas/responses/user/userCreated.yaml
+      '401':
+        description: get users unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: get users forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getUserByUuidAdmin:
+  get:
+    operationId: getUserByUuidADmin
+    summary: get user by uuid by admin
+    tags: [user]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: get user by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/user/userCreated.yaml
+      '401':
+        description: get user by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: get user by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: get user by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getUserMe:
+  get:
+    operationId: getUserMe
+    summary: get user me
+    tags: [user]
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: get user me accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/user/userCreated.yaml
+      '401':
+        description: get user me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+patchUserByuuidAdmin:
+  patch:
+    operationId: patchUserByUuidAdmin
+    summary: patch user by uuid by admin
+    tags: [user]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/user/userUpdateRequest.yaml
+    responses:
+      '200':
+        description: patch user by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/user/userUpdated.yaml
+      '400':
+        description: patch user by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        username:
+                          - 'username required'
+                          - 'username minimum has 5 characters'
+                        password:
+                          - 'password minimum has 5 characters'
+      '409':
+        description: patch user by uuid by admin conflict
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/conflict_409.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        username: username already exist
+      '401':
+        description: patch user by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: patch user by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: patch user by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+patchUserMe:
+  patch:
+    operationId: patchUserMe
+    summary: patch user me
+    tags: [user]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/user/userUpdateRequest.yaml
+    responses:
+      '200':
+        description: patch user me accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/user/userUpdated.yaml
+      '400':
+        description: patch user me bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        username:
+                          - 'username required'
+                          - 'username minimum has 5 characters'
+                        password:
+                          - 'password minimum has 5 characters'
+      '409':
+        description: patch user me conflict
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/conflict_409.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        username: username already exist
+      '401':
+        description: patch user me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '404':
+        description: patch user me not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteUserByUuidAdmin:
+  delete:
+    operationId: deleteUserByUuidAdmin
+    summary: delete user by uuid by admin
+    tags: [user]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '204':
+        description: delete user by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete user by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: delete user by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: delete user by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteUserMe:
+  delete:
+    operationId: deleteUserMe
+    summary: delete user me
+    tags: [user]
+    security:
+      - bearerAuth: []
+    responses:
+      '204':
+        description: delete user me accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete user me unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '404':
+        description: delete user me not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml

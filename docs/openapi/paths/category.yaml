@@ -1,0 +1,284 @@
+postCategoryAdmin:
+  post:
+    operationId: postCategoryAdmin
+    summary: post new category by admin
+    security:
+      - bearerAuth: []
+    tags: [category]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/category/categoryRequest.yaml
+    responses:
+      '201':
+        description: post new category by admin successfully
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/created_201.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/category/categoryCreated.yaml
+      '400':
+        description: post new category by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        categoryName:
+                          - categoryName required
+                          - categoryName should has 5 characters
+                          - categoryName invalid
+      '409':
+        description: post category by admin conflict
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/conflict_409.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        categoryName: categoryName already exist
+      '401':
+        description: post category by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: post category by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getCategoriesAdmin:
+  get:
+    operationId: getCategoriesAdmin
+    summary: get categories by admin
+    tags: [category]
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: get categories by admin
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: ../components/schemas/responses/category/categoryCreated.yaml
+      '401':
+        description: post category by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: post category by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getCategoryByUuidAdmin:
+  get:
+    operationId: getCategoryByUuidAdmin
+    summary: get category by uuid by admin
+    tags: [category]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: get category by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/category/categoryCreated.yaml
+      '401':
+        description: get category by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: get product by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: get product by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+patchCategoryByUuidAdmin:
+  patch:
+    operationId: patchCategoryByUuidAdmin
+    summary: patch category by uuid by admin
+    tags: [category]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/category/categoryUpdateRequest.yaml
+    responses:
+      '200':
+        description: patch category by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/category/categoryUpdated.yaml
+      '400':
+        description: patch category by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        categoryName:
+                          - categoryName required
+                          - categoryName minimum has 5 characters
+                          - categoryName invalid
+      '409':
+          description: patch category by uuid by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ../components/schemas/http/conflict_409.yaml
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example: 
+                          categoryName: categoryName already exist
+      '401':
+        description: patch category by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: patch category by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: patch category by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteCategoryByUuidAdmin:
+  delete:
+    operationId: deleteCategoryByUuidAdmin
+    summary: delete category by uuid by admin
+    tags: [category]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '204':
+        description: delete category by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete category by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: delete category by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: delete category by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml

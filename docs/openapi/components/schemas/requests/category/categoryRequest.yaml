@@ -1,0 +1,7 @@
+type: object
+required:
+  - categoryName
+properties:
+  categoryName:
+    type: string
+    example: japanese

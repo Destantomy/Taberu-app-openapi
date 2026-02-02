@@ -1,0 +1,33 @@
+type: object
+required:
+  - uuid
+  - ownerUuid
+  - cartUuid
+  - items
+  - totalPrice
+  - createdAt
+properties:
+  uuid:
+    type: string
+    # format: uuid
+    example: transaction-abcdef1234
+  ownerUuid:
+    type: string
+    # format: uuid
+    example: user-abcdef1234
+  cartUuid:
+    type: string
+    # format: uuid
+    example: cart-abcdef1234
+  items:
+    type: array
+    items:
+      $ref: ../product/productRelation.yaml
+  totalPrice:
+    type: integer
+    example: 60000
+  createdAt:
+    type: string
+    format: date-time
+    example: 2026-01-18T10:30:00Z
+    readOnly: true

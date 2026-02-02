@@ -1,0 +1,13 @@
+type: object
+required:
+  - productUuid
+  - quantity
+properties:
+  productUuid:
+    type: string
+    # format: uuid
+    example: product-abcdef1234
+  quantity:
+    type: integer
+    minimum: 1
+    example: 3

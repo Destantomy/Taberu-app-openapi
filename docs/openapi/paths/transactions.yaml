@@ -1,0 +1,75 @@
+postTransactionAdmin:
+  post:
+    operationId: postTransactionAdmin
+    summary: post transaction journal after done the payment
+    security:
+      - bearerAuth: []
+    tags: [transaction]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/transactions/transactionsRequest.yaml
+    responses:
+      '201':
+        description: post transaction journal successfully
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/created_201.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/transactions/transactionsCreate.yaml
+      '401':
+        description: adding product by customer unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteTransactionAdmin:
+  delete:
+    operationId: deleteTransactionAdmin
+    summary: delete transaction by uuid by admin
+    tags: [transaction]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '204':
+        description: delete transaction by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete transaction by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: delete transaction by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: delete transaction by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml

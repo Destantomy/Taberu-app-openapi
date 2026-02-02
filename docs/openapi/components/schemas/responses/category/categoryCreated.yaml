@@ -1,0 +1,22 @@
+type: object
+required:
+  - uuid
+  - categoryName
+  - createdAt
+  - updatedAt
+properties:
+  uuid:
+    type: string
+    # format: uuid
+    example: category-abcdef1234
+  categoryName:
+    type: string
+    example: japanese
+  createdAt:
+    type: string
+    format: date-time
+    example: 2026-01-18T10:30:00Z
+  updatedAt:
+    type: string
+    format: date-time
+    example: 2026-01-18T10:30:00Z

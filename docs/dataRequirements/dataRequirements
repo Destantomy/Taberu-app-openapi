@@ -1,0 +1,66 @@
+Project: Taberu!
+Data: User, Product, Category, Cart, Transactions
+
+User: {
+    uuid: "user-abcdef1234",
+    username: "najiha",
+    password: "$2y$12$4Umg0rCJwMswRw/l.SwH",
+    role: "customer", // enum: [admin, customer]
+    createdAt: date-time,
+    updatedAt: date-time,
+}
+
+Product: {
+    uuid: "product-abcdef1234",
+    productName: "onigiri",
+    imageUrl: "/assets/images/product/product-123.png",
+    price: 12000,
+    stock: 10,
+    categoryUuid: "category-abcdef1234",
+    isAvailable: true,
+    createdAt: date-time,
+    updatedAt: date-time,
+}
+
+Category: {
+    uuid: "category-abcdef1234",
+    categoryName: "japanese",
+    createdAt: date-time,
+    updatedAt: date-time,
+}
+
+Cart: {
+    uuid: "cart-abcdef1234",
+    ownerUuid: "user-abcdef1234",
+    items: [
+        {
+            productUuid: "product-abcdef1234",
+            productName: "onigiri",
+            price: 12000,
+            quantity: 5,
+            subTotal: 60000
+            
+        },
+    ],
+    totalPrice: 60000,
+    createdAt: date-time,
+    updatedAt: date-time,
+}
+
+Transactions: {
+    uuid: "transaction-abcdef1234",
+    cartUuid: "cart-abcdef1234",
+    ownerUuid: "user-abcdef1234",
+    items: [
+        {
+            productUuid: "product-abcdef1234",
+            productName: "onigiri",
+            price: 12000,
+            quantity: 5,
+            subTotal: 60000
+            
+        },
+    ],
+    totalPrice: 60000,
+    createdAt: date-time
+}

@@ -1,0 +1,5 @@
+type: object
+required: []
+description: |
+  Checkout current user's cart.
+  All transaction data will be generated from cart.

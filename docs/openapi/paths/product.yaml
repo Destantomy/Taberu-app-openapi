@@ -1,0 +1,304 @@
+postProductAdmin:
+  post:
+    operationId: postProductAdmin
+    summary: post new product by admin
+    security:
+      - bearerAuth: []
+    tags: [product]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema: 
+            $ref: ../components/schemas/requests/product/productRequest.yaml
+    responses:
+      '201':
+        description: post new product by admin successfully
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/created_201.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/product/productCreated.yaml
+      '400':
+        description: post new product by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        productName:
+                          - productName required
+                          - productName minimum has 5 characters
+                          - productName invalid
+                        imageUrl:
+                          - imageUrl required
+                          - imageUrl invalid
+                        price:
+                          - price required
+                          - price should greater than 0
+                          - price invalid
+                        stock:
+                          - stock required
+                          - stock should greater than 0
+                          - stock invalid
+                        categoryUuid:
+                          - category required
+      '409':
+        description: post product by admin conflict
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/conflict_409.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example: 
+                        productName: productName already exist
+      '401':
+        description: post product by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: post product by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getProducts:
+  get:
+    operationId: getProducts
+    summary: get products by both of admin and customer
+    tags: [product]
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: get products by both of admin and customer accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: ../components/schemas/responses/product/productCreated.yaml
+      '401':
+        description: get products by both of admin and user unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+getProductByUuid:
+  get:
+    operationId: getProductByUuid
+    summary: get product by uuid by both of admin and customer
+    tags: [product]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: get product by uuid by both of admin and user accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/product/productCreated.yaml
+      '401':
+        description: get product by uuid by both of admin and user unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: get product by uuid by both of admin and user forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: get product by uuid by both of admin and user not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml                
+patchProductByUuidAdmin:
+  patch:
+    operationId: patchProductByUuidAdmin
+    summary: patch product by uuid by admin
+    tags: [product]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/requests/product/productUpdateRequest.yaml
+    responses:
+      '200':
+        description: patch product by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/accepted_200.yaml
+                - type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: ../components/schemas/responses/product/productUpdated.yaml
+      '400':
+        description: patch product by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - errors
+                  properties:
+                    errors:
+                      type: object
+                      example:
+                        productName:
+                          - productName required
+                          - productName minimum has 5 characters
+                          - productName invalid
+                        imageUrl:
+                          - imageUrl required
+                          - imageUrl invalid
+                        price:
+                          - price required
+                          - price should greater than 0
+                          - price invalid
+                        stock:
+                          - stock required
+                          - stock should greater than 0
+                          - stock invalid
+                        categoryUuid:
+                          - category required
+      '409':
+          description: patch product by uuid by admin conflict
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: ../components/schemas/http/conflict_409.yaml
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example: 
+                          productName: productName already exist
+      '401':
+        description: patch product by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: patch product by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: patch product by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml
+deleteProductByUuidAdmin:
+  delete:
+    operationId: deleteProductByUuidAdmin
+    summary: delete product by uuid by admin
+    tags: [product]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '204':
+        description: delete product by uuid by admin accepted
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/deleted_204.yaml
+      '401':
+        description: delete product by uuid by admin unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/unauthorized_401.yaml
+      '403':
+        description: delete product by uuid by admin forbidden
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/forbidden_403.yaml
+      '404':
+        description: delete product by uuid by admin not found
+        content:
+          application/json:
+            schema:
+              $ref: ../components/schemas/http/notFound_404.yaml
+      '500':
+        $ref: ../components/schemas/http/error_500.yaml

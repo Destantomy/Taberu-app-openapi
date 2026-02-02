@@ -1,0 +1,25 @@
+type: object
+properties:
+  productName:
+    type: string
+    example: onigiri salmon
+  imageUrl:
+    type: string
+    example: /assets/images/product/product-1234.png
+  price:
+    type: integer
+    example: 11800
+  stock:
+    type: integer
+    example: 9
+  categoryUuid:
+    type: string
+    # format: uuid
+    example: category-abcde1234
+  isAvailable:
+    type: boolean
+    example: true
+  updatedAt:
+    type: string
+    format: date-time
+    example: 2026-01-18T10:30:00Z

@@ -1,0 +1,12 @@
+type: object
+required:
+  - categoryUuid
+  - categoryName
+properties:
+  categoryUuid:
+    type: string
+    # format: uuid
+    example: category-abcdef1234
+  categoryName:
+    type: string
+    example: japanese
