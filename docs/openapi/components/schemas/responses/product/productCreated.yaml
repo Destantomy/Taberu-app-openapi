@@ -5,7 +5,7 @@ required:
   - imageUrl
   - price
   - stock
-  - category
+  - categoryUuid
   - isAvailable
   - createdAt
   - updatedAt
@@ -26,7 +26,7 @@ properties:
   stock:
     type: integer
     example: 10
-  category:
+  categoryUuid:
     type: string
     # format: uuid
     example: category-abcdef1234

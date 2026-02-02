@@ -44,7 +44,7 @@ postCategoryAdmin:
                           - categoryName should has 5 characters
                           - categoryName invalid
       '409':
-        description: post category by admin conflict
+        description: post new category by admin conflict
         content:
           application/json:
             schema:
@@ -59,13 +59,13 @@ postCategoryAdmin:
                       example: 
                         categoryName: categoryName already exist
       '401':
-        description: post category by admin unauthorized
+        description: post new category by admin unauthorized
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/unauthorized_401.yaml
       '403':
-        description: post category by admin forbidden
+        description: post new category by admin forbidden
         content:
           application/json:
             schema:
@@ -136,6 +136,22 @@ getCategoryByUuidAdmin:
                   properties:
                     data:
                       $ref: ../components/schemas/responses/category/categoryCreated.yaml
+      '400':
+        description: get category by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: get category by uuid by admin unauthorized
         content:
@@ -143,13 +159,13 @@ getCategoryByUuidAdmin:
             schema:
               $ref: ../components/schemas/http/unauthorized_401.yaml
       '403':
-        description: get product by uuid by admin forbidden
+        description: get category by uuid by admin forbidden
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/forbidden_403.yaml
       '404':
-        description: get product by uuid by admin not found
+        description: get category by uuid by admin not found
         content:
           application/json:
             schema:
@@ -262,6 +278,22 @@ deleteCategoryByUuidAdmin:
           application/json:
             schema:
               $ref: ../components/schemas/http/deleted_204.yaml
+      '400':
+        description: delete category by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: delete category by uuid by admin unauthorized
         content:

@@ -6,5 +6,5 @@ properties:
   password:
     type: string
     format: password
-    description: plain password will be hashed by server
+    description: plain password will be hashed by the server
     example: secret12345

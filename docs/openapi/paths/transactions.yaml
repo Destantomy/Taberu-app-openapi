@@ -1,6 +1,6 @@
-postTransactionAdmin:
+postTransaction:
   post:
-    operationId: postTransactionAdmin
+    operationId: postTransaction
     summary: post transaction journal after done the payment
     security:
       - bearerAuth: []
@@ -13,7 +13,7 @@ postTransactionAdmin:
             $ref: ../components/schemas/requests/transactions/transactionsRequest.yaml
     responses:
       '201':
-        description: post transaction journal successfully
+        description: post transaction journal by customer successfully
         content:
           application/json:
             schema:
@@ -26,7 +26,7 @@ postTransactionAdmin:
                     data:
                       $ref: ../components/schemas/responses/transactions/transactionsCreate.yaml
       '401':
-        description: adding product by customer unauthorized
+        description: post transaction journal by customer unauthorized
         content:
           application/json:
             schema:
@@ -53,6 +53,22 @@ deleteTransactionAdmin:
           application/json:
             schema:
               $ref: ../components/schemas/http/deleted_204.yaml
+      '400':
+        description: delete transaction by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: delete transaction by uuid by admin unauthorized
         content:

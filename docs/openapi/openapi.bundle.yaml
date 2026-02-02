@@ -54,11 +54,11 @@ paths:
                         example:
                           username:
                             - username required
-                            - username minimum 5 characters
+                            - username minimum has 5 characters
                             - username invalid
                           password:
                             - password required
-                            - password minimum 5 characters
+                            - password minimum has 5 characters
                             - password invalid
         '409':
           description: user registration conflict
@@ -105,7 +105,7 @@ paths:
                       data:
                         $ref: '#/components/schemas/userLogin'
         '400':
-          description: login bad request
+          description: user login bad request
           content:
             application/json:
               schema:
@@ -151,13 +151,13 @@ paths:
                         items:
                           $ref: '#/components/schemas/userCreated'
         '401':
-          description: get users unauthorized
+          description: get users by admin unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unauthorized_401'
         '403':
-          description: get users forbidden
+          description: get users by admin forbidden
           content:
             application/json:
               schema:
@@ -192,6 +192,22 @@ paths:
                     properties:
                       data:
                         $ref: '#/components/schemas/userCreated'
+        '400':
+          description: get user by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: get user by uuid by admin unauthorized
           content:
@@ -427,6 +443,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deleted_204'
+        '400':
+          description: delete user by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: delete user by uuid by admin unauthorized
           content:
@@ -536,19 +568,19 @@ paths:
                           categoryUuid:
                             - category required
         '401':
-          description: post product by admin unauthorized
+          description: post new product by admin unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unauthorized_401'
         '403':
-          description: post product by admin forbidden
+          description: post new product by admin forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/forbidden_403'
         '409':
-          description: post product by admin conflict
+          description: post new product by admin conflict
           content:
             application/json:
               schema:
@@ -589,7 +621,7 @@ paths:
                         items:
                           $ref: '#/components/schemas/productCreated'
         '401':
-          description: get products by both of admin and user unauthorized
+          description: get products by both of admin and customer unauthorized
           content:
             application/json:
               schema:
@@ -612,7 +644,7 @@ paths:
             type: string
       responses:
         '200':
-          description: get product by uuid by both of admin and user accepted
+          description: get product by uuid by both of admin and customer accepted
           content:
             application/json:
               schema:
@@ -624,20 +656,36 @@ paths:
                     properties:
                       data:
                         $ref: '#/components/schemas/productCreated'
+        '400':
+          description: get product by uuid by both of admin and customer bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
-          description: get product by uuid by both of admin and user unauthorized
+          description: get product by uuid by both of admin and customer unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unauthorized_401'
         '403':
-          description: get product by uuid by both of admin and user forbidden
+          description: get product by uuid by both of admin and customer forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/forbidden_403'
         '404':
-          description: get product by uuid by both of admin and user not found
+          description: get product by uuid by both of admin and customer not found
           content:
             application/json:
               schema:
@@ -765,6 +813,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deleted_204'
+        '400':
+          description: delete product by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: delete product by uuid by admin unauthorized
           content:
@@ -832,19 +896,19 @@ paths:
                             - categoryName should has 5 characters
                             - categoryName invalid
         '401':
-          description: post category by admin unauthorized
+          description: post new category by admin unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unauthorized_401'
         '403':
-          description: post category by admin forbidden
+          description: post new category by admin forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/forbidden_403'
         '409':
-          description: post category by admin conflict
+          description: post new category by admin conflict
           content:
             application/json:
               schema:
@@ -926,6 +990,22 @@ paths:
                     properties:
                       data:
                         $ref: '#/components/schemas/categoryCreated'
+        '400':
+          description: get category by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: get category by uuid by admin unauthorized
           content:
@@ -933,13 +1013,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/unauthorized_401'
         '403':
-          description: get product by uuid by admin forbidden
+          description: get category by uuid by admin forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/forbidden_403'
         '404':
-          description: get product by uuid by admin not found
+          description: get category by uuid by admin not found
           content:
             application/json:
               schema:
@@ -1054,6 +1134,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deleted_204'
+        '400':
+          description: delete category by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: delete category by uuid by admin unauthorized
           content:
@@ -1090,7 +1186,7 @@ paths:
               $ref: '#/components/schemas/cartRequest'
       responses:
         '201':
-          description: adding product by customer successfully
+          description: adding product into cart by customer successfully
           content:
             application/json:
               schema:
@@ -1103,7 +1199,7 @@ paths:
                       data:
                         $ref: '#/components/schemas/cartCreate'
         '400':
-          description: adding product by customer bad request
+          description: adding product into cart by customer bad request
           content:
             application/json:
               schema:
@@ -1120,7 +1216,7 @@ paths:
                             - quantity required
                             - quantity should be greater than 0
         '401':
-          description: adding product by customer unauthorized
+          description: adding product into cart by customer unauthorized
           content:
             application/json:
               schema:
@@ -1239,9 +1335,9 @@ paths:
                 $ref: '#/components/schemas/notFound_404'
         '500':
           $ref: '#/components/responses/error_500'
-  /transactions/postTransactionAdmin:
+  /transactions/postTransaction:
     post:
-      operationId: postTransactionAdmin
+      operationId: postTransaction
       summary: post transaction journal after done the payment
       security:
         - bearerAuth: []
@@ -1255,7 +1351,7 @@ paths:
               $ref: '#/components/schemas/transactionsRequest'
       responses:
         '201':
-          description: post transaction journal successfully
+          description: post transaction journal by customer successfully
           content:
             application/json:
               schema:
@@ -1268,7 +1364,7 @@ paths:
                       data:
                         $ref: '#/components/schemas/transactionsCreate'
         '401':
-          description: adding product by customer unauthorized
+          description: post transaction journal by customer unauthorized
           content:
             application/json:
               schema:
@@ -1296,6 +1392,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deleted_204'
+        '400':
+          description: delete transaction by uuid by admin bad request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/badRequest_400'
+                  - type: object
+                    required:
+                      - error
+                    properties:
+                      error:
+                        type: object
+                        example:
+                          uuid:
+                            - invalid uuid format
         '401':
           description: delete transaction by uuid by admin unauthorized
           content:
@@ -1335,7 +1447,7 @@ components:
         password:
           type: string
           format: password
-          description: plain password will be hashed by server
+          description: plain password will be hashed by the server
           example: secret1234
     created_201:
       type: object
@@ -1490,7 +1602,7 @@ components:
         password:
           type: string
           format: password
-          description: plain password will be hashed by server
+          description: plain password will be hashed by the server
           example: secret12345
     userUpdated:
       type: object
@@ -1501,7 +1613,7 @@ components:
         password:
           type: string
           format: password
-          description: plain password will hashed by server
+          description: plain password will hashed by the server
           example: secret123
         updatedAt:
           type: string
@@ -1555,7 +1667,7 @@ components:
         - imageUrl
         - price
         - stock
-        - category
+        - categoryUuid
         - isAvailable
         - createdAt
         - updatedAt
@@ -1575,7 +1687,7 @@ components:
         stock:
           type: integer
           example: 10
-        category:
+        categoryUuid:
           type: string
           example: category-abcdef1234
         isAvailable:

@@ -57,7 +57,7 @@ postProductAdmin:
                         categoryUuid:
                           - category required
       '409':
-        description: post product by admin conflict
+        description: post new product by admin conflict
         content:
           application/json:
             schema:
@@ -72,13 +72,13 @@ postProductAdmin:
                       example: 
                         productName: productName already exist
       '401':
-        description: post product by admin unauthorized
+        description: post new product by admin unauthorized
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/unauthorized_401.yaml
       '403':
-        description: post product by admin forbidden
+        description: post new product by admin forbidden
         content:
           application/json:
             schema:
@@ -109,7 +109,7 @@ getProducts:
                       items:
                         $ref: ../components/schemas/responses/product/productCreated.yaml
       '401':
-        description: get products by both of admin and user unauthorized
+        description: get products by both of admin and customer unauthorized
         content:
           application/json:
             schema:
@@ -131,7 +131,7 @@ getProductByUuid:
           type: string
     responses:
       '200':
-        description: get product by uuid by both of admin and user accepted
+        description: get product by uuid by both of admin and customer accepted
         content:
           application/json:
             schema:
@@ -143,20 +143,36 @@ getProductByUuid:
                   properties:
                     data:
                       $ref: ../components/schemas/responses/product/productCreated.yaml
+      '400':
+        description: get product by uuid by both of admin and customer bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
-        description: get product by uuid by both of admin and user unauthorized
+        description: get product by uuid by both of admin and customer unauthorized
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/unauthorized_401.yaml
       '403':
-        description: get product by uuid by both of admin and user forbidden
+        description: get product by uuid by both of admin and customer forbidden
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/forbidden_403.yaml
       '404':
-        description: get product by uuid by both of admin and user not found
+        description: get product by uuid by both of admin and customer not found
         content:
           application/json:
             schema:
@@ -282,6 +298,22 @@ deleteProductByUuidAdmin:
           application/json:
             schema:
               $ref: ../components/schemas/http/deleted_204.yaml
+      '400':
+        description: delete product by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: delete product by uuid by admin unauthorized
         content:

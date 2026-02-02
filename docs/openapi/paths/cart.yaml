@@ -13,7 +13,7 @@ addProductCart:
             $ref: ../components/schemas/requests/cart/cartRequest.yaml
     responses:
       '201':
-        description: adding product by customer successfully
+        description: adding product into cart by customer successfully
         content:
           application/json:
             schema:
@@ -26,7 +26,7 @@ addProductCart:
                     data:
                       $ref: ../components/schemas/responses/cart/cartCreate.yaml
       '400':
-        description: adding product by customer bad request
+        description: adding product into cart by customer bad request
         content:
           application/json:
             schema:
@@ -43,7 +43,7 @@ addProductCart:
                           - quantity required
                           - quantity should be greater than 0
       '401':
-        description: adding product by customer unauthorized
+        description: adding product into cart by customer unauthorized
         content:
           application/json:
             schema:

@@ -65,8 +65,8 @@ paths:
   /cart/deleteProductCartMe:
     $ref: paths/cart.yaml#/deleteProductCartMe
   # transactions
-  /transactions/postTransactionAdmin:
-    $ref: paths/transactions.yaml#/postTransactionAdmin
+  /transactions/postTransaction:
+    $ref: paths/transactions.yaml#/postTransaction
   /transactions/deleteTransactionAdmin/{uuid}:
     $ref: paths/transactions.yaml#/deleteTransactionAdmin
 

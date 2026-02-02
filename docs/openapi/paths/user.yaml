@@ -40,11 +40,11 @@ register:
                       example:
                         username:
                           - 'username required'
-                          - 'username minimum 5 characters'
+                          - 'username minimum has 5 characters'
                           - 'username invalid'
                         password:
                           - 'password required'
-                          - 'password minimum 5 characters'
+                          - 'password minimum has 5 characters'
                           - 'password invalid'
       '409':
         description: user registration conflict
@@ -90,7 +90,7 @@ login:
                       data:
                         $ref: ../components/schemas/responses/user/userLogin.yaml
         '400':
-          description: login bad request
+          description: user login bad request
           content:
             application/json:
               schema:
@@ -135,13 +135,13 @@ getUsersAdmin:
                       items:
                         $ref: ../components/schemas/responses/user/userCreated.yaml
       '401':
-        description: get users unauthorized
+        description: get users by admin unauthorized
         content:
           application/json:
             schema:
               $ref: ../components/schemas/http/unauthorized_401.yaml
       '403':
-        description: get users forbidden
+        description: get users by admin forbidden
         content:
           application/json:
             schema:
@@ -175,6 +175,22 @@ getUserByUuidAdmin:
                   properties:
                     data:
                       $ref: ../components/schemas/responses/user/userCreated.yaml
+      '400':
+        description: get user by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: get user by uuid by admin unauthorized
         content:
@@ -272,10 +288,10 @@ patchUserByuuidAdmin:
                       type: object
                       example:
                         username:
-                          - 'username required'
-                          - 'username minimum has 5 characters'
+                          - username required
+                          - username minimum has 5 characters
                         password:
-                          - 'password minimum has 5 characters'
+                          - password minimum has 5 characters
       '409':
         description: patch user by uuid by admin conflict
         content:
@@ -406,6 +422,22 @@ deleteUserByUuidAdmin:
           application/json:
             schema:
               $ref: ../components/schemas/http/deleted_204.yaml
+      '400':
+        description: delete user by uuid by admin bad request
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: ../components/schemas/http/badRequest_400.yaml
+                - type: object
+                  required:
+                    - error
+                  properties:
+                    error:
+                      type: object
+                      example:
+                        uuid:
+                          - invalid uuid format
       '401':
         description: delete user by uuid by admin unauthorized
         content:
